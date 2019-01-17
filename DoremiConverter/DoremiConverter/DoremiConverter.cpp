@@ -8,7 +8,7 @@ int main()
 	cv::Mat img;
 	cv::namedWindow("EXAMPLE01", CV_WINDOW_AUTOSIZE);
 
-	img = cv::imread("kt.png", CV_LOAD_IMAGE_COLOR);
+	img = cv::imread("windows.jpg", CV_LOAD_IMAGE_COLOR);
 	if (img.empty())
 	{
 		std::cout << "[!] You can NOT see the cat!" << std::endl;
