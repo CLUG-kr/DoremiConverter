@@ -1,21 +1,37 @@
 ﻿#include "pch.h"
-#include <iostream>
-#include <opencv2/opencv.hpp>
+#include "DoremiConverter.h"
 
-int main()
-{
-	std::cout << "OpenCV Version : " << CV_VERSION << std::endl;
-	cv::Mat img;
-	cv::namedWindow("EXAMPLE01", CV_WINDOW_AUTOSIZE);
 
-	img = cv::imread("windows.jpg", CV_LOAD_IMAGE_COLOR);
-	if (img.empty())
+DoremiConverter::DoremiConverter(string imgName) {
+	this->inputImg = imread(imgName, CV_LOAD_IMAGE_COLOR);
+}
+
+void DoremiConverter::binarization(Mat img) {
+	threshold(img, img, 150, 255, CV_THRESH_BINARY);
+}
+
+int DoremiConverter::show() {
+	cout << "OpenCV Version : " << CV_VERSION << endl;
+	namedWindow("Sheet Test View", CV_WINDOW_AUTOSIZE);
+	this->binarization(this->inputImg);
+
+
+	if (this->inputImg.empty())
 	{
-		std::cout << "[!] You can NOT see the cat!" << std::endl;
+		cout << "There's no sheet file!" << endl;
 		return -1;
 	}
-	cv::imshow("EXAMPLE01", img);
-	cv::waitKey(0);
-	cv::destroyWindow("EXAMPLE01");
+
+	imshow("Sheet Test View", this->inputImg);
+	waitKey(0);
+	destroyAllWindows();
+}
+
+
+// For Dev.
+int main()
+{
+	DoremiConverter dc("windows.jpg");
+	dc.show();
 	return 0;
 }

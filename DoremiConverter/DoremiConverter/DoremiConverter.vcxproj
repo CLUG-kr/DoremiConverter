@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DoremiConverter.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

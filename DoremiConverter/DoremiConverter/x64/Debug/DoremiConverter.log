@@ -1,2 +1,3 @@
 ﻿  DoremiConverter.cpp
+c:\users\tyg04\onedrive\desktop\cau\project\doremiconverter\doremiconverter\doremiconverter\doremiconverter.cpp(28): warning C4715: 'DoremiConverter::show': 모든 제어 경로에서 값을 반환하지는 않습니다.
   DoremiConverter.vcxproj -> C:\Users\tyg04\OneDrive\Desktop\CAU\project\DoremiConverter\DoremiConverter\x64\Debug\DoremiConverter.exe
