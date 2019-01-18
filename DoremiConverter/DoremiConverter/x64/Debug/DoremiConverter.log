@@ -1,3 +1,4 @@
 ﻿  DoremiConverter.cpp
-c:\users\tyg04\onedrive\desktop\cau\project\doremiconverter\doremiconverter\doremiconverter\doremiconverter.cpp(28): warning C4715: 'DoremiConverter::show': 모든 제어 경로에서 값을 반환하지는 않습니다.
+c:\users\tyg04\onedrive\desktop\cau\project\doremiconverter\doremiconverter\doremiconverter\doremiconverter.cpp(27): warning C4715: 'DoremiConverter::show': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  LINK : C:\Users\tyg04\OneDrive\Desktop\CAU\project\DoremiConverter\DoremiConverter\x64\Debug\DoremiConverter.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   DoremiConverter.vcxproj -> C:\Users\tyg04\OneDrive\Desktop\CAU\project\DoremiConverter\DoremiConverter\x64\Debug\DoremiConverter.exe

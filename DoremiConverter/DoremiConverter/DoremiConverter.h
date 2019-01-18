@@ -8,8 +8,10 @@ using namespace std;
 class DoremiConverter {
 private:
 	Mat inputImg;
+	Mat makeHistogram(int FLAG);
 	void binarization(Mat img);
 public:
 	DoremiConverter(string imgName);
 	int show();
+	int getNote();
 };
