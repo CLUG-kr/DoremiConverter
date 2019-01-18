@@ -4,6 +4,7 @@
 
 DoremiConverter::DoremiConverter(string imgName) {
 	this->inputImg = imread(imgName, CV_LOAD_IMAGE_COLOR);
+	this->binarization(this->inputImg);
 }
 
 void DoremiConverter::binarization(Mat img) {
@@ -13,8 +14,6 @@ void DoremiConverter::binarization(Mat img) {
 int DoremiConverter::show() {
 	cout << "OpenCV Version : " << CV_VERSION << endl;
 	namedWindow("Sheet Test View", CV_WINDOW_AUTOSIZE);
-	this->binarization(this->inputImg);
-
 
 	if (this->inputImg.empty())
 	{
