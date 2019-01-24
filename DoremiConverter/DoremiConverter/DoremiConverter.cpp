@@ -3,12 +3,12 @@
 
 
 DoremiConverter::DoremiConverter(string imgName) {
-	this->inputImg = imread(imgName, CV_LOAD_IMAGE_COLOR);
+	this->inputImg = imread(imgName, IMREAD_GRAYSCALE);
 	this->binarization(this->inputImg);
 }
 
 void DoremiConverter::binarization(Mat img) {
-	threshold(img, img, 150, 255, CV_THRESH_BINARY);
+	threshold(img, img, 0, 255, THRESH_OTSU);
 }
 
 int DoremiConverter::show() {
@@ -30,7 +30,7 @@ int DoremiConverter::show() {
 // For Dev.
 int main()
 {
-	DoremiConverter dc("windows.jpg");
+	DoremiConverter dc("rotated_sheet_original.jpg");
 	dc.show();
 	return 0;
 }
