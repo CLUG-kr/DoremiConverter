@@ -10,8 +10,10 @@ private:
 public:
 	Mat inputImg;
 	Mat edgeImg;
+	Mat straightImg;
 	DoremiConverter(string imgName);
 	void binarization(Mat img);
 	int show(Mat img, string title);
 	void edgeDetect();
+	void straightDetect();
 };
