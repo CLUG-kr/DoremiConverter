@@ -5,7 +5,7 @@
 using namespace cv;
 using namespace std;
 
-class DoremiConverter {
+class PreProcessing {
 private:
 public:
 	Mat inputImg;
@@ -13,11 +13,11 @@ public:
 	Mat edgeImg;
 	Mat straightImg;
 	Mat straightendImg;
-	DoremiConverter(string imgName);
-	void binarization(Mat img);
+	PreProcessing(string imgName);
 	int show(Mat img, string title);
+	void binarization();
 	void edgeDetect();
-	void straightDetect();
+	vector<Vec4i> straightExtract();
 	double calculateDegree(vector<Vec4i> lines);
 	void rotateImage(double degree);
 };
