@@ -7,9 +7,11 @@ using namespace std;
 
 class DoremiConverter {
 private:
-	Mat inputImg;
-	void binarization(Mat img);
 public:
+	Mat inputImg;
+	Mat edgeImg;
 	DoremiConverter(string imgName);
-	int show();
+	void binarization(Mat img);
+	int show(Mat img, string title);
+	void edgeDetect();
 };
