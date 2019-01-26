@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "DoremiConverter.h"
-
+#include <math.h>
 
 DoremiConverter::DoremiConverter(string imgName) {
 	this->inputImg = imread(imgName, IMREAD_GRAYSCALE);
@@ -90,6 +90,22 @@ void DoremiConverter::straightDetect() {
 		Vec4i l = linesP[i];
 		line(this->straightImg, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(255, 255, 255), 1, LINE_AA);
 	}
+	calculateDegree(linesP);
+}
+
+// Calculate the slope average of straight lines (staff line)
+void DoremiConverter::calculateDegree(vector<Vec4i> lines) {
+	double sum = 0;
+	for (size_t i = 0; i < lines.size(); i++) {
+		Vec4i l = lines[i];
+		int dx = l[0] - l[2];
+		int dy = l[1] - l[3];
+		double rad = atan2((double)dx, (double)dy);
+		double degree = abs(rad * 180) / CV_PI;
+		sum += degree;
+	}
+	float average = (float) roundf(sum / lines.size() * 100) / 100;
+	printf("%f", average);
 }
 
 // For Dev.
@@ -99,7 +115,7 @@ int main()
 	dc.binarization(dc.inputImg);
 	//dc.show(dc.inputImg, "binary image");
 	dc.edgeDetect();
-	dc.show(dc.edgeImg, "sobel edge");
+	//dc.show(dc.edgeImg, "sobel edge");
 	dc.straightDetect();
 	dc.show(dc.straightImg, "hough line");
 	waitKey(0);

@@ -16,4 +16,5 @@ public:
 	int show(Mat img, string title);
 	void edgeDetect();
 	void straightDetect();
+	void calculateDegree(vector<Vec4i> lines);
 };
