@@ -9,12 +9,15 @@ class DoremiConverter {
 private:
 public:
 	Mat inputImg;
+	Mat binaryImg;
 	Mat edgeImg;
 	Mat straightImg;
+	Mat straightendImg;
 	DoremiConverter(string imgName);
 	void binarization(Mat img);
 	int show(Mat img, string title);
 	void edgeDetect();
 	void straightDetect();
-	void calculateDegree(vector<Vec4i> lines);
+	double calculateDegree(vector<Vec4i> lines);
+	void rotateImage(double degree);
 };

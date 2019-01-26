@@ -9,7 +9,7 @@ DoremiConverter::DoremiConverter(string imgName) {
 }
 
 void DoremiConverter::binarization(Mat img) {
-	threshold(img, img, 0, 255, THRESH_OTSU);
+	threshold(img, this->binaryImg, 0, 255, THRESH_OTSU);
 }
 
 int DoremiConverter::show(Mat img, string title) {
@@ -29,7 +29,7 @@ int DoremiConverter::show(Mat img, string title) {
 void DoremiConverter::edgeDetect() {
 
 	// Canny
-	//Canny(this->inputImg, this->edgeImg, 50, 200, 3);
+	//Canny(this->binaryImg, this->edgeImg, 50, 200, 3);
 
 	int scale = 1;
 	int delta = 0;
@@ -37,14 +37,14 @@ void DoremiConverter::edgeDetect() {
 
 	// reduce the noise (kernel size=3)
 	Mat blurredImg;
-	// GaussianBlur(this->inputImg, blurredImg, Size(5, 5), 0, 0, BORDER_DEFAULT);
+	// GaussianBlur(this->binaryImg, blurredImg, Size(5, 5), 0, 0, BORDER_DEFAULT);
 	
 	Mat grad_x, grad_y;
 	Mat abs_grad_x, abs_grad_y;
 
 	// calculate derivatives in x and y directions
-	Sobel(inputImg, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
-	Sobel(inputImg, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
+	Sobel(binaryImg, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
+	Sobel(binaryImg, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
 	//Scharr(blurredImg, grad_x, ddepth, 1, 0, scale, delta, BORDER_DEFAULT);
 	//Scharr(blurredImg, grad_y, ddepth, 0, 1, scale, delta, BORDER_DEFAULT);
 
@@ -90,11 +90,11 @@ void DoremiConverter::straightDetect() {
 		Vec4i l = linesP[i];
 		line(this->straightImg, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(255, 255, 255), 1, LINE_AA);
 	}
-	calculateDegree(linesP);
+	rotateImage(calculateDegree(linesP));
 }
 
 // Calculate the slope average of straight lines (staff line)
-void DoremiConverter::calculateDegree(vector<Vec4i> lines) {
+double DoremiConverter::calculateDegree(vector<Vec4i> lines) {
 	double sum = 0;
 	for (size_t i = 0; i < lines.size(); i++) {
 		Vec4i l = lines[i];
@@ -104,8 +104,20 @@ void DoremiConverter::calculateDegree(vector<Vec4i> lines) {
 		double degree = abs(rad * 180) / CV_PI;
 		sum += degree;
 	}
-	float average = (float) roundf(sum / lines.size() * 100) / 100;
-	printf("%f", average);
+	double average = roundf(sum / lines.size() * 100) / 100;
+	double degree = 90 - average;
+	printf("%f", degree);
+	return degree;
+}
+
+// rotate the image
+void DoremiConverter::rotateImage(double degree) {
+	Point center = Point(this->inputImg.cols / 2, this->inputImg.rows / 2);
+	double scale = 0.8;
+	degree = degree * -1;
+	printf("%f", degree);
+	Mat rot_mat = getRotationMatrix2D(center, degree, scale);
+	warpAffine(this->inputImg, this->straightendImg, rot_mat, this->inputImg.size());
 }
 
 // For Dev.
@@ -113,11 +125,12 @@ int main()
 {
 	DoremiConverter dc("rotated_sheet_original.jpg");
 	dc.binarization(dc.inputImg);
-	//dc.show(dc.inputImg, "binary image");
+	//dc.show(dc.binaryImg, "binary image");
 	dc.edgeDetect();
 	//dc.show(dc.edgeImg, "sobel edge");
 	dc.straightDetect();
 	dc.show(dc.straightImg, "hough line");
+	dc.show(dc.straightendImg, "straightened lmage");
 	waitKey(0);
 	destroyAllWindows();
 	return 0;
