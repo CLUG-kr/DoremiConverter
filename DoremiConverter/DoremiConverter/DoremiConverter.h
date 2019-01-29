@@ -8,8 +8,12 @@ using namespace std;
 class DoremiConverter {
 private:
 	Mat inputImg;
-	void binarization(Mat img);
+	void binarization();
+
 public:
 	DoremiConverter(string imgName);
 	int show();
+	int show(Mat img);
+	vector<vector<int>> encodeRLE();
+	Mat decodeRLE(vector<vector<int>> RLE);
 };
