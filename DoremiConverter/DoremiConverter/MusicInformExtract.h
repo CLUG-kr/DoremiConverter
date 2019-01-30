@@ -9,7 +9,8 @@ class MusicInformExtract {
 private:
 public:
 	Mat components;
+	vector<Rect> objectRects;
 	MusicInformExtract();
-	void ComponentDetect(Mat img);
-
+	void componentDetect(Mat img);
+	//void histogram(Mat img);
 };

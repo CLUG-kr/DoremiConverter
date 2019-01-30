@@ -6,29 +6,38 @@
 // For Dev.
 int main()
 {
-	//PreProcessing pre("rotated_sheet_original.jpg");
-	//pre.binarization();
+	PreProcessing pre("rotated_sheet_original.jpg");
+	pre.binarization();
 	//pre.show(pre.binaryImg, "Binary image");
-	//pre.edgeDetect();
+	pre.edgeDetect();
 	//pre.show(pre.edgeImg, "Sobel edge image");
-	//pre.rotateImage(pre.calculateDegree(pre.straightExtract()));
+	pre.rotateImage(pre.calculateDegree(pre.straightExtract()));
 	//pre.show(pre.straightendImg, "Straightened image");
-	//pre.inputImg = pre.straightendImg.clone();
-	//pre.binarization();
-	//pre.show(pre.binaryImg, "Straightened Binary image");
+	pre.inputImg = pre.straightendImg.clone();
+	pre.binarization();
+	pre.show(pre.binaryImg, "Straightened Binary image");
 	//pre.edgeDetect();
 	//pre.show(pre.edgeImg, "Straightened Sobel edge image");
-	int DELAY_BLUR = 100;
-	int MAX_KERNEL_LENGTH = 31;
+	//pre.straightExtract();
+	//pre.show(pre.straightImg, "straight");
+	pre.stafflineDetect();
+	pre.show(pre.staffLine, "staffline");
+	pre.objectsDetect();
+	pre.show(pre.objects, "objects");
 
-	PreProcessing pre("notes.jpg");
-	pre.binarization();
-	//medianBlur(pre.binaryImg, pre.binaryImg, 1);	
-	pre.show(pre.binaryImg, "Binary notes");
+	//PreProcessing pre("notes.jpg");
+	//pre.binarization();
+	////medianBlur(pre.binaryImg, pre.binaryImg, 1);	
+	//pre.show(pre.binaryImg, "Binary notes");
+	//pre.edgeDetect();
+	//pre.show(pre.edgeImg, "Sobel edge image");
+	//pre.straightExtract();
+	//pre.show(pre.straightImg, "straight image");
+	
 	MusicInformExtract info = MusicInformExtract();
-	info.ComponentDetect(pre.binaryImg);
+	info.componentDetect(pre.objects);
 	pre.show(info.components, "cca image");
-
+	
 	waitKey(0);
 	destroyAllWindows();
 	return 0;
