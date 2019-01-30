@@ -15,28 +15,19 @@ int main()
 	//pre.show(pre.straightendImg, "Straightened image");
 	pre.inputImg = pre.straightendImg.clone();
 	pre.binarization();
-	pre.show(pre.binaryImg, "Straightened Binary image");
+	//pre.show(pre.binaryImg, "Straightened Binary image");
 	//pre.edgeDetect();
 	//pre.show(pre.edgeImg, "Straightened Sobel edge image");
 	//pre.straightExtract();
 	//pre.show(pre.straightImg, "straight");
 	pre.stafflineDetect();
-	pre.show(pre.staffLine, "staffline");
+	//pre.show(pre.staffLine, "staffline");
 	pre.objectsDetect();
-	pre.show(pre.objects, "objects");
-
-	//PreProcessing pre("notes.jpg");
-	//pre.binarization();
-	////medianBlur(pre.binaryImg, pre.binaryImg, 1);	
-	//pre.show(pre.binaryImg, "Binary notes");
-	//pre.edgeDetect();
-	//pre.show(pre.edgeImg, "Sobel edge image");
-	//pre.straightExtract();
-	//pre.show(pre.straightImg, "straight image");
+	//pre.show(pre.objects, "objects");
 	
 	MusicInformExtract info = MusicInformExtract();
 	info.componentDetect(pre.objects);
-	pre.show(info.components, "cca image");
+	pre.show(~info.components, "cca image");
 	
 	waitKey(0);
 	destroyAllWindows();

@@ -106,7 +106,7 @@ double PreProcessing::calculateDegree(vector<Vec4i> lines) {
 	}
 	double average = round(sum / lines.size() * 100) / 100;
 	double degree = 90 - average;
-	printf("%f", degree);
+	// printf("%f", degree);
 	return degree;
 }
 
@@ -115,7 +115,7 @@ void PreProcessing::rotateImage(double degree) {
 	Point center = Point(this->inputImg.cols / 2, this->inputImg.rows / 2);
 	double scale = 1;
 	degree = degree * -1;
-	printf("%f", degree);
+	// printf("%f", degree);
 	Mat rot_mat = getRotationMatrix2D(center, degree, scale);
 	warpAffine(this->inputImg, this->straightendImg, rot_mat, this->inputImg.size());
 }

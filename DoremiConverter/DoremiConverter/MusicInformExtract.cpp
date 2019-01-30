@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "MusicInformExtract.h"
+#include <algorithm>
 
 MusicInformExtract::MusicInformExtract() {
 
@@ -16,7 +17,7 @@ void MusicInformExtract::componentDetect(Mat binImg) {
 	findContours(binImg, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	vector<vector<Point>> contours_poly(contours.size());
-	vector<Rect> boundRect(contours.size());
+	vector<Rect> boundRect;
 
 	for (int i = 0; i < contours.size(); i++) {
 		/*Contour Approximation
@@ -26,27 +27,32 @@ void MusicInformExtract::componentDetect(Mat binImg) {
 			boundRect[i] = boundingRect(Mat(contours_poly[i]));
 		}
 		*/
-		// cout << contourArea(Mat(contours[i])) << endl;
-		if (fabs(contourArea(Mat(contours[i])) > 100)) {
-			boundRect[i] = boundingRect(Mat(contours[i]));
-			//Mat object = binImg(boundRect[i]);
-			//Histogram(object);
-			//namedWindow("object" + to_string(i), CV_WINDOW_AUTOSIZE);
-			//imshow("object" + to_string(i), object);
+		if (fabs(contourArea(Mat(contours[i])) > 5)) {
+			//boundRect[rectCnt] = boundingRect(Mat(contours[i]));
+			boundRect.push_back(boundingRect(Mat(contours[i])));
 		}
 	}
+	// sort object rectangles by x
+	sort(boundRect.begin(), boundRect.end(), byX());
+	for (int i = 0; i < boundRect.size(); i++) {
+		cout << "x: " << boundRect.at(i).x << "y: " << boundRect.at(i).y << "width: " << boundRect.at(i).width << "height: " << boundRect.at(i).height << endl;
+	}
+
 	Mat contourImg = Mat(binImg.rows, binImg.cols, CV_8U);
 	Mat rectImg = Mat(binImg.rows, binImg.cols, CV_8U);
 	//Scalar color(0, 0, 0);
 	Scalar color(255, 255, 255);
 	for (int i = 0; i < contours.size(); i++) {
-		//drawContours(this->components, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point());
-		//rectangle(this->components, boundRect[i].tl(), boundRect[i].br(), color, 1);
 		drawContours(contourImg, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point());
-		rectangle(rectImg, boundRect[i].tl(), boundRect[i].br(), color, 1);
+	}
+	for (int i = 0; i < boundRect.size(); i++) {
+		rectangle(contourImg, boundRect[i].tl(), boundRect[i].br(), color, 1);
 	}
 	namedWindow("contours", CV_WINDOW_AUTOSIZE);
 	imshow("contours", contourImg);
+
+	//namedWindow("rect", CV_WINDOW_AUTOSIZE);
+	//imshow("rect", rectImg);
 
 	this->objectRects = boundRect;
 }
