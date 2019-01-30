@@ -19,14 +19,16 @@ int PreProcessing::show(Mat img, string title) {
 	imshow(title, img);
 }
 
+// Image binarization
 void PreProcessing::binarization() {
 
 	//threshold(this->inputImg, this->binaryImg, 0, 255, THRESH_OTSU);
 	//adaptiveThreshold(inputImg, this->binaryImg, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 5, 10);
-	adaptiveThreshold(inputImg, this->binaryImg, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, 10);
+	//**adaptiveThreshold(inputImg, this->binaryImg, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, 10);
+	adaptiveThreshold(~inputImg, this->binaryImg, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, -2);
 }
 
-
+// Edge detecting with Sobel Algorithm
 void PreProcessing::edgeDetect() {
 
 	int scale = 1;
@@ -56,6 +58,7 @@ void PreProcessing::edgeDetect() {
 	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, this->edgeImg);
 }
 
+// Straight line extract with Hough transformation
 vector<Vec4i> PreProcessing::straightExtract() {
 
 	Mat blank(this->inputImg.rows, this->inputImg.cols, CV_8UC1, Scalar(0));
@@ -85,9 +88,8 @@ vector<Vec4i> PreProcessing::straightExtract() {
 	HoughLinesP(this->edgeImg, linesP, 1, CV_PI / 180, 50, 200, 10);
 	for (size_t i = 0; i < linesP.size(); i++) {
 		Vec4i l = linesP[i];
-		line(this->straightImg, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(255, 255, 255), 1, LINE_AA);
+		line(this->straightImg, Point(l[0], l[1]), Point(l[2], l[3]), Scalar(255, 255, 255), 1);
 	}
-	
 	return linesP;
 }
 
@@ -104,7 +106,7 @@ double PreProcessing::calculateDegree(vector<Vec4i> lines) {
 	}
 	double average = round(sum / lines.size() * 100) / 100;
 	double degree = 90 - average;
-	printf("%f", degree);
+	// printf("%f", degree);
 	return degree;
 }
 
@@ -113,7 +115,32 @@ void PreProcessing::rotateImage(double degree) {
 	Point center = Point(this->inputImg.cols / 2, this->inputImg.rows / 2);
 	double scale = 1;
 	degree = degree * -1;
-	printf("%f", degree);
+	// printf("%f", degree);
 	Mat rot_mat = getRotationMatrix2D(center, degree, scale);
 	warpAffine(this->inputImg, this->straightendImg, rot_mat, this->inputImg.size());
+}
+
+void PreProcessing::stafflineDetect() {
+	this->staffLine = this->binaryImg.clone();
+	int horizontalsize = this->staffLine.cols / 50;
+	Mat horizontalStructure = getStructuringElement(MORPH_RECT, Size(horizontalsize, 1));
+	erode(this->staffLine, this->staffLine, horizontalStructure, Point(-1, -1));
+	dilate(this->staffLine, this->staffLine, horizontalStructure, Point(-1, -1));
+}
+
+void PreProcessing::objectsDetect() {
+	this->objects = this->binaryImg.clone();
+	int verticalsize = this->objects.rows / 280;
+	Mat verticalStructure = getStructuringElement(MORPH_RECT, Size(1, verticalsize));
+	erode(this->objects, this->objects, verticalStructure, Point(-1, -1));
+	dilate(this->objects, this->objects, verticalStructure, Point(-1, -1));
+
+	/* Extract edges and smooth image according to the logic
+	Mat edges;
+	adaptiveThreshold(this->objects, edges, 255, CV_ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, -2);
+	Mat kernel = Mat::ones(2, 2, CV_8UC1);
+	dilate(edges, edges, kernel);
+	blur(this->objects, this->objects, Size(2, 2));
+	this->objects.copyTo(this->objects, edges);
+	*/
 }
