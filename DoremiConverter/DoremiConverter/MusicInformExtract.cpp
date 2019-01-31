@@ -13,6 +13,12 @@ void MusicInformExtract::componentDetect(Mat binImg) {
 	vector<Vec4i> hierarchy;
 	this->components = binImg.clone();
 
+	// connect nearby contours
+	Mat structuringElement = getStructuringElement(MORPH_RECT, Size(6, 6));
+	morphologyEx(binImg, binImg, MORPH_CLOSE, structuringElement);
+	
+	//dilate(binImg, binImg, Mat());
+
 	// find contours
 	findContours(binImg, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
@@ -27,15 +33,17 @@ void MusicInformExtract::componentDetect(Mat binImg) {
 			boundRect[i] = boundingRect(Mat(contours_poly[i]));
 		}
 		*/
-		if (fabs(contourArea(Mat(contours[i])) > 5)) {
-			//boundRect[rectCnt] = boundingRect(Mat(contours[i]));
-			boundRect.push_back(boundingRect(Mat(contours[i])));
-		}
+		// cout << contourArea(Mat(contours[i])) << endl;
+		//if (fabs(contourArea(Mat(contours[i])) > 10)) {
+		//	//boundRect[i] = boundingRect(Mat(contours[i]));
+		//	boundRect.push_back(boundingRect(Mat(contours[i])));
+		//}
+		boundRect.push_back(boundingRect(Mat(contours[i])));
 	}
 	// sort object rectangles by x
 	sort(boundRect.begin(), boundRect.end(), byX());
 	for (int i = 0; i < boundRect.size(); i++) {
-		cout << "x: " << boundRect.at(i).x << "y: " << boundRect.at(i).y << "width: " << boundRect.at(i).width << "height: " << boundRect.at(i).height << endl;
+		cout << "   x: " << boundRect.at(i).x << "y: " << boundRect.at(i).y << "width: " << boundRect.at(i).width << "height: " << boundRect.at(i).height << endl;
 	}
 
 	Mat contourImg = Mat(binImg.rows, binImg.cols, CV_8U);
@@ -46,10 +54,10 @@ void MusicInformExtract::componentDetect(Mat binImg) {
 		drawContours(contourImg, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point());
 	}
 	for (int i = 0; i < boundRect.size(); i++) {
-		rectangle(contourImg, boundRect[i].tl(), boundRect[i].br(), color, 1);
+		rectangle(rectImg, boundRect[i].tl(), boundRect[i].br(), color, 1);
 	}
 	namedWindow("contours", CV_WINDOW_AUTOSIZE);
-	imshow("contours", contourImg);
+	imshow("contours", rectImg);
 
 	//namedWindow("rect", CV_WINDOW_AUTOSIZE);
 	//imshow("rect", rectImg);
