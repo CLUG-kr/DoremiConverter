@@ -13,6 +13,9 @@ public:
 	Mat edgeImg;
 	Mat straightImg;
 	Mat straightendImg;
+	Mat staffLine;
+	Mat objects;
+
 	PreProcessing(string imgName);
 	int show(Mat img, string title);
 	void binarization();
@@ -20,4 +23,7 @@ public:
 	vector<Vec4i> straightExtract();
 	double calculateDegree(vector<Vec4i> lines);
 	void rotateImage(double degree);
+	void stafflineDetect();
+	void objectsDetect();
+
 };

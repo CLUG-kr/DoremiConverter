@@ -1,5 +1,8 @@
 ﻿#include "pch.h"
 #include "PreProcessing.h"
+#include "MusicInformExtract.h"
+#include "RemoveStaff.h"
+#include "PreCharRecognize.h"
 #include <math.h>
 
 // For Dev.
@@ -7,16 +10,59 @@ int main()
 {
 	PreProcessing pre("rotated_sheet_original.jpg");
 	pre.binarization();
-	pre.show(pre.binaryImg, "Binary image");
+	//pre.show(pre.binaryImg, "Binary image");
 	pre.edgeDetect();
-	pre.show(pre.edgeImg, "Sobel edge image");
+	//pre.show(pre.edgeImg, "Sobel edge image");
 	pre.rotateImage(pre.calculateDegree(pre.straightExtract()));
-	pre.show(pre.straightendImg, "Straightened image");
+	//pre.show(pre.straightendImg, "Straightened image");
 	pre.inputImg = pre.straightendImg.clone();
 	pre.binarization();
-	pre.show(pre.binaryImg, "Straightened Binary image");
-	pre.edgeDetect();
-	pre.show(pre.edgeImg, "Straightened Sobel edge image");
+	//pre.show(pre.binaryImg, "Straightened Binary image");
+	//pre.edgeDetect();
+	//pre.show(pre.edgeImg, "Straightened Sobel edge image");
+	//pre.straightExtract();
+	//pre.show(pre.straightImg, "straight");
+	pre.stafflineDetect();
+	//pre.show(pre.staffLine, "staffline");
+	//imwrite("staffLine.jpg", pre.staffLine);
+	//pre.objectsDetect();
+	//imwrite("object.jpg", pre.objects);
+
+	/* Char Recognition First Step */
+	// Detect Line
+	RemoveStaff rs;
+	rs.DetectLines(pre.staffLine);
+	// Distinguish staff or others
+	rs.GetStaffLocation();
+	// remove ROI 
+	rs.Remove(pre.straightendImg.clone());
+	//rs.show(rs.result, "result");
+	//imwrite("RemoveStaff.jpg", rs.result);
+	
+	/* Char Recognition Second Step */
+	// Crop Char area
+	// Title, Composer
+	PreCharRecognize cr(rs.result, rs.staff_y);
+	cr.CropTop();
+	// crop line <- top + bottom
+	cr.CropAllLine();
+
+
+	// 글자 세분화
+	/*
+	// Read
+	string title = "PreCRImg/TopImg";
+	Mat img = cv::imread(title+".jpg");
+	// Detect Letters
+	cr.detectLetters(img);
+	// Save All Letters
+	cr.saveAllLetters(img, title);
+	// Save Each Letters
+	cr.saveEachLetters(img, title);
+	*/
+
+
+	// excute tesseract -> save line order, top(code), bottom(lyrics)
 
 	waitKey(0);
 	destroyAllWindows();
