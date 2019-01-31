@@ -119,10 +119,15 @@ void RemoveStaff::Remove(Mat img){
 	Mat sub_img;
 	int nr;
 	int nc;
+	int staffArea_h = this->staff_y[1] - this->staff_y[0];
+
+	cout << "오선위치" << endl;
 
 	for (int i = 0; i < this->staff_y.size(); i += 2) {
 
-		sub_img = img(Rect(0, this->staff_y[i], img.cols, this->staff_y[i + 1] - this->staff_y[i])); // share memory
+		sub_img = img(Rect(0, this->staff_y[i], img.cols, staffArea_h)); // share memory
+
+		this->staff_y[i + 1] = this->staff_y[i] + staffArea_h;
 
 		nr = sub_img.rows;
 		nc = sub_img.cols * img.channels();
@@ -138,6 +143,9 @@ void RemoveStaff::Remove(Mat img){
 			}
 		}
 
+		cout << i/2 + 1 <<"번째 오선" << endl;
+		cout << "시작:" << this ->staff_y[i] << endl;
+		cout << "끝:" << this->staff_y[i+1] << endl;
 
 	}
 

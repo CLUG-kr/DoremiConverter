@@ -25,6 +25,8 @@ int main()
 	pre.stafflineDetect();
 	//pre.show(pre.staffLine, "staffline");
 	//imwrite("staffLine.jpg", pre.staffLine);
+	pre.objectsDetect();
+	imwrite("object.jpg", pre.objects);
 
 	/* Char Recognition First Step */
 	// Detect Line
@@ -35,6 +37,7 @@ int main()
 	// remove ROI 
 	rs.Remove(pre.straightendImg.clone());
 	//rs.show(rs.result, "result");
+	//imwrite("RemoveStaff.jpg", rs.result);
 	
 	/* Char Recognition Second Step */
 	// Crop Char area

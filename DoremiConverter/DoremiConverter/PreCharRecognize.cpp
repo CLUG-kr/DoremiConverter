@@ -38,7 +38,7 @@ void PreCharRecognize::CropTop() {
 // Crop opearation for each line area
 void PreCharRecognize::CropLine(int order) {
 	
-	int staff_height = this->staff_y[order + 1] - this->staff_y[order];
+	int staff_height = this->staff_y[1] - this->staff_y[0];
 	int start = 0;
 	int end = 0;
 	Mat subImg;
@@ -52,7 +52,7 @@ void PreCharRecognize::CropLine(int order) {
 
 	// make line's bottom image
 	start = staff_y[order + 1] + staff_height * 0.5;
-	end = start + staff_height*1.4;
+	end = start + staff_height;
 	subImg = inputImg(Rect(0, start, inputImg.cols, end - start));
 	
 	this->lineBottomImg = subImg;
