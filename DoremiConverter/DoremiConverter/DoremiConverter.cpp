@@ -46,6 +46,7 @@ int main()
 
 
 	// 글자 세분화
+	/*
 	// Read
 	string title = "PreCRImg/TopImg";
 	Mat img = cv::imread(title+".jpg");
@@ -55,6 +56,8 @@ int main()
 	cr.saveAllLetters(img, title);
 	// Save Each Letters
 	cr.saveEachLetters(img, title);
+	*/
+
 
 	// excute tesseract -> save line order, top(code), bottom(lyrics)
 
