@@ -23,8 +23,8 @@ int main()
 	//pre.straightExtract();
 	//pre.show(pre.straightImg, "straight");
 	pre.stafflineDetect();
-	//pre.show(pre.staffLine, "staffline");
-	
+	pre.show(pre.staffLine, "staffline");
+	//imwrite("staffLine.jpg", pre.staffLine);
 
 	/* Char Recognition First Step */
 	// Detect Line
@@ -43,6 +43,35 @@ int main()
 	cr.CropTop();
 	// crop line <- top + bottom
 	cr.CropAllLine();
+
+
+	// 글자 세분화
+	//Read
+	Mat img1 = cv::imread("PreCRImg/TopImg.jpg");
+	Mat subimg1;
+	string title;
+	//Detect
+	vector<Rect> letterBBoxes1 = cr.detectLetters(img1);
+	// 글자 구역 인식한거 저장하는 코드
+	for (int i = 0; i < letterBBoxes1.size(); i++) {
+		rectangle(img1, letterBBoxes1[i], Scalar(0, 255, 0), 2, 8, 0);
+	}
+	imwrite("PreCRImg/TopImg-entire.jpg", img1);
+
+	// 글자 구역 나눈거 저장하는 코드
+	/*
+	for (int i = 0; i < letterBBoxes1.size(); i++) {
+		rectangle(img1, letterBBoxes1[i], Scalar(255, 255, 255), 0, 0, 0);
+		subimg1 = img1(letterBBoxes1[i]);
+		title = "PreCRImg/LineTop3-split";
+		title += to_string(i);
+		title += ".jpg";
+		imwrite(title, subimg1);
+	}
+	*/
+
+
+
 
 	// excute tesseract -> save line order, top(code), bottom(lyrics)
 

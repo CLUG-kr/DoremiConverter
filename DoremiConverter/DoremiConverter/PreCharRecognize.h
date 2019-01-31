@@ -30,6 +30,7 @@ public:
 	void CropTop();
 	void CropLine(int order);
 	void CropAllLine();
+	vector<cv::Rect> detectLetters(cv::Mat img);
 	int show(Mat img, string title);
 
 };
