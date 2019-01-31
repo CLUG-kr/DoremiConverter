@@ -33,7 +33,7 @@ int main()
 	// Distinguish staff or others
 	rs.GetStaffLocation();
 	// remove ROI 
-	rs.Remove(pre.straightendImg.clone());
+	rs.Remove(pre.binaryImg.clone());
 	//rs.show(rs.result, "result");
 	
 	/* Char Recognition Second Step */
