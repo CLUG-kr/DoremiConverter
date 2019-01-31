@@ -21,12 +21,30 @@
     <ClInclude Include="DoremiConverter.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="PreProcessing.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicInformExtract.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlyChar.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DoremiConverter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PreProcessing.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicInformExtract.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlyChar.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

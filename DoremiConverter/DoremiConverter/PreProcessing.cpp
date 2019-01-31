@@ -34,13 +34,13 @@ void PreProcessing::edgeDetect() {
 	int scale = 1;
 	int delta = 0;
 	int ddepth = CV_16S;
-	
+
 	/*
 	// reduce the noise (kernel size=3)
 	Mat blurredImg;
 	GaussianBlur(this->binaryImg, blurredImg, Size(5, 5), 0, 0, BORDER_DEFAULT);
 	*/
-	
+
 	Mat grad_x, grad_y;
 	Mat abs_grad_x, abs_grad_y;
 
@@ -70,16 +70,16 @@ vector<Vec4i> PreProcessing::straightExtract() {
 	HoughLines(this->edgeImg, lines, 1, CV_PI / 180, 150, 0, 0);
 	// Draw lines
 	for (size_t i = 0; i < lines.size(); i++) {
-		float rho = lines[i][0], theta = lines[i][1];
-		Point pt1, pt2;
-		double a = cos(theta), b = sin(theta);
-		double x0 = a * rho, y0 = b * rho;
-		pt1.x = cvRound(x0 + 1000 * (-b));
-		pt1.y = cvRound(y0 + 1000 * (a));
-		pt2.x = cvRound(x0 - 1000 * (-b));
-		pt2.y = cvRound(y0 - 1000 * (a));
-		line(this->straightImg, pt1, pt2, Scalar(255, 255, 255), 2, LINE_AA);
-		printf("®G®G\n");
+	float rho = lines[i][0], theta = lines[i][1];
+	Point pt1, pt2;
+	double a = cos(theta), b = sin(theta);
+	double x0 = a * rho, y0 = b * rho;
+	pt1.x = cvRound(x0 + 1000 * (-b));
+	pt1.y = cvRound(y0 + 1000 * (a));
+	pt2.x = cvRound(x0 - 1000 * (-b));
+	pt2.y = cvRound(y0 - 1000 * (a));
+	line(this->straightImg, pt1, pt2, Scalar(255, 255, 255), 2, LINE_AA);
+	printf("®G®G\n");
 	}
 	*/
 

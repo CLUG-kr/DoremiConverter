@@ -3,6 +3,9 @@
 #include "MusicInformExtract.h"
 #include <math.h>
 
+#define STAFFHEIGHT (3)
+#define STAFFSPACE (5)
+
 // For Dev.
 int main()
 {
@@ -15,12 +18,15 @@ int main()
 	pre.stafflineDetect();
 	pre.show(pre.staffLine, "staffline");
 	
-	// count line's white cols
+
+	imwrite("staffLine.jpg", pre.staffLine);
+	
+	// Detect Line
 	int nr = pre.staffLine.rows;          
 	int nc = pre.staffLine.cols * pre.staffLine.channels();
-	int staff = 0;
-	int staff_x[100];
-	int staff_c = 0;
+	int staff_h = 0;
+	vector<int> temp_staff_y;
+	int staff_order = 1;
 	
 	for(int i = 0; i < nr ; i++ ){
 		
@@ -36,39 +42,83 @@ int main()
 		}
 		
 		if(wcount != 0){		
-			staff++;			
+			staff_h++;			
 		}
 		else{
 			
 			// staff -> i-1 i-2 i-3
-			if(staff == 3){		
-				staff_x[staff_c] = i-3;
-				staff_x[staff_c + 1] = i-2;
-				staff_x[staff_c + 2] = i-1;
-				staff_c = staff_c+3;	
-				staff = 0;					
+			if(staff_h == STAFFHEIGHT){
+				temp_staff_y.push_back(i-3);
+				temp_staff_y.push_back(i-2);
+				temp_staff_y.push_back(i-1);
+				staff_h = 0;
 			}
-						// staff -> i-1 i-2 i-3
-			else if(staff == 4){		
-				staff_x[staff_c] = i-4;
-				staff_x[staff_c + 1] = i-3;
-				staff_x[staff_c + 2] = i-2;
-				staff_x[staff_c + 3] = i-1;
-				staff_c = staff_c+4;	
-				staff = 0;					
+			// staff -> i-1 i-2 i-3 i-4
+			else if(staff_h == STAFFHEIGHT+1){
+				temp_staff_y.push_back(i-4);
+				temp_staff_y.push_back(i-3);
+				temp_staff_y.push_back(i-2);
+				temp_staff_y.push_back(i-1);
+				staff_h = 0;					
 			}
 			else{
-				staff = 0;
+				staff_h = 0;
 			}
 		}
 		
 	}
-	
-	for(int i = 0 ; i<staff_c; i++){
-		cout << staff_x[i] << endl;
+
+
+
+	// Distinguish staff or others
+	int space = 0;
+	int n_space = 0;
+	vector<int> staff_y;
+
+	staff_y.push_back(temp_staff_y[0]);
+
+	for (int i = 1; i < temp_staff_y.size(); i++) {
+		
+		space = temp_staff_y[i] - temp_staff_y[i-1];
+		
+		// staff space
+		if (space >=STAFFSPACE && space <= STAFFSPACE+2 ) {
+			n_space++;
+		}
+		// margin
+		else if(space > STAFFSPACE+2) {
+			
+
+			// If previous lines are staffs
+			if (n_space >=3 && n_space<=4) {
+				staff_y.push_back(temp_staff_y[i - 1]);
+				staff_y.push_back(temp_staff_y[i]);
+			}
+			// if previous lines are not staffs
+			else {
+				staff_y.pop_back();
+				staff_y.push_back(temp_staff_y[i]);
+			}
+			n_space = 0;
+		}
+
+		// end checking
+		else if (i == temp_staff_y.size() - 1) {
+			if (n_space == 4) {
+				staff_y.push_back(temp_staff_y[i]);
+			}
+			n_space = 0;
+		}
+
 	}
-	
-	
+	cout << "result" << endl;
+	for (int i = 0; i<staff_y.size(); i++) {
+		cout << staff_y[i] << endl;
+	}
+
+
+	pre.show(pre.straightendImg, "test");
+
 	//vector<Vec4i> linesP;
 	//linesP = pre.straightExtract();
 	

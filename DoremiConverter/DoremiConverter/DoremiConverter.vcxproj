@@ -161,16 +161,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DoremiConverter.h" />
+    <ClInclude Include="MusicInformExtract.h" />
+    <ClInclude Include="OnlyChar.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PreProcessing.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DoremiConverter.cpp" />
+    <ClCompile Include="DoremiConverter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="MusicInformExtract.cpp" />
+    <ClCompile Include="OnlyChar.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PreProcessing.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
