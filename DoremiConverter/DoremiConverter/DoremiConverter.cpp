@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "PreProcessing.h"
 #include "MusicInformExtract.h"
+#include "RemoveStaff.h"
 #include <math.h>
 
 // For Dev.
@@ -22,12 +23,17 @@ int main()
 	//pre.show(pre.straightImg, "straight");
 	pre.stafflineDetect();
 	//pre.show(pre.staffLine, "staffline");
-	pre.objectsDetect();
-	//pre.show(pre.objects, "objects");
 	
-	MusicInformExtract info = MusicInformExtract();
-	info.componentDetect(pre.objects);
-	pre.show(~info.components, "cca image");
+
+	/* Char Recognition First Step */
+	// Detect Line
+	RemoveStaff rs;
+	rs.DetectLines(pre.staffLine);
+	// Distinguish staff or others
+	rs.GetStaffLocation();
+	// remove ROI 
+	rs.Remove(pre.straightendImg.clone());
+	rs.show(rs.result, "result");
 	
 	waitKey(0);
 	destroyAllWindows();

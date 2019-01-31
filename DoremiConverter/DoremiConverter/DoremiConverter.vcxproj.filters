@@ -18,16 +18,13 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="DoremiConverter.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="PreProcessing.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="MusicInformExtract.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="OnlyChar.h">
+    <ClInclude Include="RemoveStaff.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,7 +41,7 @@
     <ClCompile Include="MusicInformExtract.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="OnlyChar.cpp">
+    <ClCompile Include="RemoveStaff.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
