@@ -5,6 +5,15 @@
 using namespace cv;
 using namespace std;
 
+typedef struct character {
+
+	// int order;
+	char * code;
+	char * lyrics;
+
+}
+character;
+
 class PreCharRecognize {
 
 private:
@@ -13,11 +22,14 @@ public:
 
 	Mat inputImg;
 	Mat topImg;
-	Mat lineImg;
+	Mat lineTopImg;
+	Mat lineBottomImg;
 	vector<int> staff_y;
+	vector<character> charResult;
 	PreCharRecognize(Mat img, vector<int> staff_y);
 	void CropTop();
-	void CropLine();
+	void CropLine(int order);
+	void CropAllLine();
 	int show(Mat img, string title);
 
 };

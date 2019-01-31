@@ -34,15 +34,15 @@ int main()
 	rs.GetStaffLocation();
 	// remove ROI 
 	rs.Remove(pre.straightendImg.clone());
-	rs.show(rs.result, "result");
+	//rs.show(rs.result, "result");
 	
 	/* Char Recognition Second Step */
 	// Crop Char area
 	// Title, Composer
 	PreCharRecognize cr(rs.result, rs.staff_y);
 	cr.CropTop();
-	cr.show(cr.topImg, "topImage");
-	// line <- top + bottom <- line 개수만큼 이미지 만들어서 집어넣기
+	// crop line <- top + bottom
+	cr.CropAllLine();
 
 	// excute tesseract -> save line order, top(code), bottom(lyrics)
 
