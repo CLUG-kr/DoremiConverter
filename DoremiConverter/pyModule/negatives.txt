@@ -1,0 +1,9 @@
+./negative_images/nega1.jpg
+./negative_images/nega2.jpg
+./negative_images/nega3.jpg
+./negative_images/nega4.jpg
+./negative_images/nega5.jpg
+./negative_images/nega6.jpg
+./negative_images/nega7.jpg
+./negative_images/nega8.jpg
+./negative_images/nega9.jpg
