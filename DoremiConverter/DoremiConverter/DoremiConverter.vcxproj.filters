@@ -27,6 +27,9 @@
     <ClInclude Include="RemoveStaff.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="PreCharRecognize.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -42,6 +45,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="RemoveStaff.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PreCharRecognize.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

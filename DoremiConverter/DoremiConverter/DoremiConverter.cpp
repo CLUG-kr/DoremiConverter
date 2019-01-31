@@ -2,6 +2,7 @@
 #include "PreProcessing.h"
 #include "MusicInformExtract.h"
 #include "RemoveStaff.h"
+#include "PreCharRecognize.h"
 #include <math.h>
 
 // For Dev.
@@ -35,6 +36,16 @@ int main()
 	rs.Remove(pre.straightendImg.clone());
 	rs.show(rs.result, "result");
 	
+	/* Char Recognition Second Step */
+	// Crop Char area
+	// Title, Composer
+	PreCharRecognize cr(rs.result, rs.staff_y);
+	cr.CropTop();
+	cr.show(cr.topImg, "topImage");
+	// line <- top + bottom <- line 개수만큼 이미지 만들어서 집어넣기
+
+	// excute tesseract -> save line order, top(code), bottom(lyrics)
+
 	waitKey(0);
 	destroyAllWindows();
 	return 0;
