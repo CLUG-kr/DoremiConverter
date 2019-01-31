@@ -81,11 +81,13 @@ void PreCharRecognize::CropAllLine() {
 	}
 }
 
-vector<cv::Rect> PreCharRecognize::detectLetters(cv::Mat img)
+// detect Letters in Image
+void PreCharRecognize::detectLetters(cv::Mat img)
 {
 	std::vector<cv::Rect> boundRect;
 	cv::Mat img_gray, img_sobel, img_threshold, element;
-	cvtColor(img, img_gray, CV_BGR2GRAY);
+	cv::Mat copyImg = img.clone();
+	cvtColor(copyImg, img_gray, CV_BGR2GRAY);
 	cv::Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, cv::BORDER_DEFAULT);
 	cv::threshold(img_sobel, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 	element = getStructuringElement(cv::MORPH_RECT, cv::Size(17, 3));
@@ -101,5 +103,37 @@ vector<cv::Rect> PreCharRecognize::detectLetters(cv::Mat img)
 			if (appRect.width>appRect.height)
 				boundRect.push_back(appRect);
 		}
-	return boundRect;
+
+	this->letterBBoxes1 = boundRect;
+}
+
+// save Entire Letters in Image
+void PreCharRecognize::saveAllLetters(Mat img, string title) {
+
+	Mat copyImg = img.clone();
+	for (int i = 0; i < letterBBoxes1.size(); i++) {
+		rectangle(copyImg, letterBBoxes1[i], Scalar(0, 255, 0), 2, 8, 0);
+	}
+	
+	title += "-entire.jpg";
+	imwrite(title, copyImg);
+
+}
+
+// save Each Letters in Image
+void PreCharRecognize::saveEachLetters(Mat img, string title) {
+
+	Mat copyImg = img.clone();
+	Mat subimg;
+	string s;
+
+	for (int i = 0; i < letterBBoxes1.size(); i++) {
+		rectangle(copyImg, letterBBoxes1[i], Scalar(255, 255, 255), 0, 0, 0);
+		subimg = copyImg(letterBBoxes1[i]);
+		s = "";
+		s = title + "-split";
+		s += to_string(i);
+		s += ".jpg";
+		imwrite(s, subimg);
+	}
 }
