@@ -16,10 +16,10 @@ int main()
 	pre.inputImg = pre.straightendImg.clone();
 	pre.binarization();
 	pre.stafflineDetect();
-	pre.show(pre.staffLine, "staffline");
+	//pre.show(pre.staffLine, "staffline");
 	
 
-	imwrite("staffLine.jpg", pre.staffLine);
+	//imwrite("staffLine.jpg", pre.staffLine);
 	
 	// Detect Line
 	int nr = pre.staffLine.rows;          
@@ -117,7 +117,62 @@ int main()
 	}
 
 
-	pre.show(pre.straightendImg, "test");
+	// remove ROI 
+	Mat img = pre.straightendImg.clone();
+	Mat sub_img;
+
+	/*
+	sub_img = img(Rect(0, staff_y[0], img.cols, staff_y[1] - staff_y[0])); // share memory
+
+	nr = sub_img.rows;
+	nc = sub_img.cols * img.channels();
+
+	for (int j = 0; j < nr; j++) {
+
+		uchar* data = sub_img.ptr<uchar>(j);
+
+		for (int k = 0; k < nc; k++) {
+
+			data[k] = 255;
+
+		}
+	}
+	*/
+	
+	for (int i = 0; i < staff_y.size(); i+=2) {
+
+		sub_img = img(Rect(0, staff_y[i], img.cols, staff_y[i+1] - staff_y[i])); // share memory
+
+		nr = sub_img.rows;
+		nc = sub_img.cols * img.channels();
+
+		for (int j = 0; j < nr; j++) {
+
+			uchar* data = sub_img.ptr<uchar>(j);
+
+			for (int k = 0; k < nc; k++) {
+
+				data[k] = 255;
+
+			}
+		}
+
+
+	}
+
+
+	namedWindow("test", CV_WINDOW_AUTOSIZE);
+
+	if (img.empty())
+	{
+		cout << "There's no sheet file!" << endl;
+		return -1;
+	}
+
+	imshow("test", img);
+
+	imwrite("OnlyChar.jpg", img);
+
 
 	//vector<Vec4i> linesP;
 	//linesP = pre.straightExtract();
